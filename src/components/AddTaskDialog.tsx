@@ -28,6 +28,7 @@ interface AddTaskDialogProps {
   detailErrorText: string;
   descriptionErrorText: string;
   enableButton: boolean;
+  onKeyDownAction: React.KeyboardEventHandler;
 }
 
 const AddTaskDialog: React.FC<AddTaskDialogProps> = ({
@@ -45,7 +46,8 @@ const AddTaskDialog: React.FC<AddTaskDialogProps> = ({
   descriptionError,
   detailErrorText,
   descriptionErrorText,
-  enableButton
+  enableButton,
+  onKeyDownAction
 }) => {
   return (
     <div>
@@ -72,6 +74,7 @@ const AddTaskDialog: React.FC<AddTaskDialogProps> = ({
             </Grid>
             <Grid item xs={12}>
               <TextField
+                onKeyDown={onKeyDownAction}
                 error={descriptionError}
                 helperText={descriptionErrorText}
                 onChange={onChange2}

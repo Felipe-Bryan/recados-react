@@ -50,11 +50,11 @@ const Home: React.FC = () => {
 
   // Adiciona o recado no array de recados do usuário logado
   const saveTask = () => {
-    setOpenDialog(false);
-
     dispatch(addUserTask(newTask));
 
     handleClearNewTaskInputs();
+
+    setOpenDialog(false);
   };
 
   // limpar os campos do modal
@@ -137,6 +137,18 @@ const Home: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      if (enableButton) {
+        if (!editTask) {
+          saveTask();
+        } else {
+          saveEdit();
+        }
+      }
+    }
+  };
+
   if (usersRedux.loggedUserIndex >= 0) {
     return (
       <Grid container spacing={2} justifyContent="center">
@@ -166,6 +178,7 @@ const Home: React.FC = () => {
         </Fab>
 
         <AddTaskDialog
+          onKeyDownAction={handleKeyDown}
           enableButton={!enableButton}
           detailError={detailError}
           detailErrorText={detailErrorText}

@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import UserType from '../types/UserType';
 import 'animate.css';
 import { setLoggedUserIndex } from '../store/modules/usersSlice';
+import { ToastContainer, toast } from 'react-toast';
 
 const Login: React.FC = () => {
   const usersRedux = useAppSelector(state => state.users);
@@ -96,7 +97,7 @@ const Login: React.FC = () => {
 
   const handleLogin = () => {
     if (!validUser) {
-      alert('Usuário ou senha incorretos!');
+      toast.error('Usuário ou senha incorretos!');
     } else if (stayLogged && userToLogin) {
       const index = usersRedux.users.findIndex(user => user.id === userToLogin.id);
       dispatch(setLoggedUserIndex(index));
@@ -112,6 +113,12 @@ const Login: React.FC = () => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleLogin();
+    }
+  };
+
+  const handleKeyDownButton = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      navigate('/home');
     }
   };
 
@@ -179,6 +186,7 @@ const Login: React.FC = () => {
           </Grid>
         </Grid>
         <AlertDialogSlide
+          onKeyDownAction={handleKeyDownButton}
           description="Você será redirecionado(a) para a página de recados."
           actionConfirm={() => navigate('/home')}
           actionCancel={() => navigate('/home')}
@@ -187,6 +195,7 @@ const Login: React.FC = () => {
           confirmButtonTitle="OK"
         />
       </Paper>
+      <ToastContainer delay={3000} position="bottom-right" />
     </>
   );
 };

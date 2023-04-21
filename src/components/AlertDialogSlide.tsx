@@ -19,6 +19,7 @@ interface AlertDialogSlideProps {
   actionConfirm: () => void;
   confirmButtonTitle: string;
   actionCancel: () => void;
+  onKeyDownAction: React.KeyboardEventHandler;
 }
 
 const AlertDialogSlide: React.FC<AlertDialogSlideProps> = ({
@@ -27,11 +28,13 @@ const AlertDialogSlide: React.FC<AlertDialogSlideProps> = ({
   description,
   openDialog,
   actionConfirm,
-  actionCancel
+  actionCancel,
+  onKeyDownAction
 }) => {
   return (
     <div>
       <Dialog
+        onKeyDown={onKeyDownAction}
         open={openDialog}
         onClose={actionCancel}
         TransitionComponent={Transition}

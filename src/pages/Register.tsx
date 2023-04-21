@@ -8,6 +8,7 @@ import { addUser } from '../store/modules/usersSlice';
 import UserType from '../types/UserType';
 import generateID from '../utils/generateID';
 import 'animate.css';
+import { ToastContainer, toast } from 'react-toast';
 
 const Register: React.FC = () => {
   const usersRedux = useAppSelector(state => state.users);
@@ -119,7 +120,7 @@ const Register: React.FC = () => {
       dispatch(addUser(newUser));
       setOpenAlert(true);
     } else {
-      alert('Usuário já cadastrado!');
+      toast.error('Usuário já cadastrado!');
     }
   };
 
@@ -128,97 +129,107 @@ const Register: React.FC = () => {
     setTimeout(() => navigate('/'), 900);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDownInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleAddUser();
     }
   };
 
+  const handleKeyDownButton = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      navigate('/');
+    }
+  };
+
   return (
-    <Paper elevation={3} style={{ padding: '5px', maxWidth: '500px' }} className={pageFade}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography align="center" variant="h4">
-            <img style={{ height: '40px' }} src="./assets/images/taskVault-logo.png" alt="logo" />
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography align="center" variant="h4">
-            Cadastrar usuário
-          </Typography>
+    <>
+      <Paper elevation={3} style={{ padding: '5px', maxWidth: '500px' }} className={pageFade}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography align="center" variant="h4">
+              <img style={{ height: '40px' }} src="./assets/images/taskVault-logo.png" alt="logo" />
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography align="center" variant="h4">
+              Cadastrar usuário
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              error={userNameError}
+              helperText={userNameError ? 'Digite um nome válido, no mínimo 3 caracteres' : ''}
+              onChange={e => handleUserName(e)}
+              fullWidth
+              label="Nome do usuário"
+              variant="outlined"
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              error={userEmailError}
+              helperText={userEmailError ? 'Digite um e-mail válido, no mínimo 5 caracteres' : ''}
+              onBlur={e => handleUserEmail(e)}
+              fullWidth
+              id="emailInput"
+              label="Email"
+              variant="outlined"
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <PasswordField
+              error={userPasswordError}
+              helperText={userPasswordError ? 'Digite uma senha válida, no mínimo 5 caracteres' : ''}
+              onChange={e => handleUserPassword(e)}
+              label="Senha"
+            ></PasswordField>
+          </Grid>
+
+          <Grid item xs={12}>
+            <PasswordField
+              onKeyDown={handleKeyDownInput}
+              error={confirmPasswordError}
+              helperText={confirmPasswordError ? 'As senhas digitadas não conferem!' : ''}
+              onChange={e => handleConfirmPassword(e)}
+              label="Repita a senha"
+            ></PasswordField>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Button
+              fullWidth
+              variant="contained"
+              disabled={!valid}
+              onClick={handleAddUser}
+              className={valid ? 'animate__animated animate__pulse animate__infinite infinite' : ''}
+            >
+              Cadastrar
+            </Button>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="body2">Já possui uma conta?</Typography>
+            <Button onClick={handleChangePage} variant="text">
+              Faça login.
+            </Button>
+          </Grid>
         </Grid>
 
-        <Grid item xs={12}>
-          <TextField
-            error={userNameError}
-            helperText={userNameError ? 'Digite um nome válido, no mínimo 3 caracteres' : ''}
-            onChange={e => handleUserName(e)}
-            fullWidth
-            label="Nome do usuário"
-            variant="outlined"
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            error={userEmailError}
-            helperText={userEmailError ? 'Digite um e-mail válido, no mínimo 5 caracteres' : ''}
-            onBlur={e => handleUserEmail(e)}
-            fullWidth
-            id="emailInput"
-            label="Email"
-            variant="outlined"
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <PasswordField
-            error={userPasswordError}
-            helperText={userPasswordError ? 'Digite uma senha válida, no mínimo 5 caracteres' : ''}
-            onChange={e => handleUserPassword(e)}
-            label="Senha"
-          ></PasswordField>
-        </Grid>
-
-        <Grid item xs={12}>
-          <PasswordField
-            onKeyDown={handleKeyDown}
-            error={confirmPasswordError}
-            helperText={confirmPasswordError ? 'As senhas digitadas não conferem!' : ''}
-            onChange={e => handleConfirmPassword(e)}
-            label="Repita a senha"
-          ></PasswordField>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Button
-            fullWidth
-            variant="contained"
-            disabled={!valid}
-            onClick={handleAddUser}
-            className={valid ? 'animate__animated animate__pulse animate__infinite infinite' : ''}
-          >
-            Cadastrar
-          </Button>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography variant="body2">Já possui uma conta?</Typography>
-          <Button onClick={handleChangePage} variant="text">
-            Faça login.
-          </Button>
-        </Grid>
-      </Grid>
-
-      <AlertDialogSlide
-        description="Você será redirecionado(a) para a página de Login."
-        actionConfirm={() => navigate('/')}
-        actionCancel={() => navigate('/')}
-        openDialog={openAlert}
-        title="Conta criada com sucesso!"
-        confirmButtonTitle="OK"
-      />
-    </Paper>
+        <AlertDialogSlide
+          onKeyDownAction={handleKeyDownButton}
+          description="Você será redirecionado(a) para a página de Login."
+          actionConfirm={() => navigate('/')}
+          actionCancel={() => navigate('/')}
+          openDialog={openAlert}
+          title="Conta criada com sucesso!"
+          confirmButtonTitle="OK"
+        />
+      </Paper>
+      <ToastContainer delay={3000} position="bottom-right" />
+    </>
   );
 };
 
