@@ -2,6 +2,9 @@
 
 Projeto criado utilizando ReactJS, Material UI, Styled Components e Redux
 
+Vídeo da aplicação:
+https://www.loom.com/share/dafa75ae70144098a93e9ec06dc113df
+
 Tela de Login sm+
 <br>
 ![login-1](https://user-images.githubusercontent.com/107513634/233882616-7ce645bc-a343-448a-bcf7-1ddc9ae24329.png)
