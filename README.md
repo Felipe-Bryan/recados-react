@@ -2,6 +2,9 @@
 
 Projeto criado utilizando ReactJS, Material UI, Styled Components e Redux
 
+Deploy da aplicação no Vercel:
+https://taskvault-gamma.vercel.app/
+
 Vídeo da aplicação:
 https://www.loom.com/share/dafa75ae70144098a93e9ec06dc113df
 
